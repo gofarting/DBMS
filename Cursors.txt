@@ -1,0 +1,109 @@
+Name: Abraham Khatti
+Class: SE-IT
+Asssignment:11
+Write a PL/SQL block to implement all types of cursor
+
+mysql> create database cursors;
+Query OK, 1 row affected (0.04 sec)
+
+mysql> use cursors;
+Database changed
+mysql> create table library (Book_ID int, Book_Title varchar(255), Author varchar(255), Available int);
+Query OK, 0 rows affected (0.34 sec)
+
+mysql> insert into library values (1, "The Gully Tales", "P.Aravind", 5);
+Query OK, 1 row affected (0.06 sec)
+
+mysql> insert into library values (2, "Rich Dad, Poor Dad", "James Thompson", 7);
+Query OK, 1 row affected (0.05 sec)
+
+mysql> insert into library values (3, "The Merchant of Venice", "W. Shakespeare", 2);
+Query OK, 1 row affected (0.03 sec)
+
+mysql> insert into library values (4, "The Malgudi Days", "R.K. Narayan", 3);
+Query OK, 1 row affected (0.39 sec)
+
+mysql> select * from library;
++---------+------------------------+----------------+-----------+
+| Book_ID | Book_Title             | Author         | Available |
++---------+------------------------+----------------+-----------+
+|       1 | The Gully Tales        | P.Aravind      |         5 |
+|       2 | Rich Dad, Poor Dad     | James Thompson |         7 |
+|       3 | The Merchant of Venice | W. Shakespeare |         2 |
+|       4 | The Malgudi Days       | R.K. Narayan   |         3 |
++---------+------------------------+----------------+-----------+
+4 rows in set (0.00 sec)
+
+mysql> CREATE PROCEDURE PROC()
+    -> BEGIN
+    -> DECLARE B_ID INT;
+    -> UPDATE LIBRARY
+    -> SET AVAILABLE = AVAILABLE + 10;
+    -> END //
+Query OK, 0 rows affected (0.12 sec)
+
+mysql> CALL PROC();
+Query OK, 4 rows affected (0.06 sec)
+
+mysql> SELECT * FROM LIBRARY;
++---------+------------------------+----------------+-----------+
+| Book_ID | Book_Title             | Author         | Available |
++---------+------------------------+----------------+-----------+
+|       1 | The Gully Tales        | P.Aravind      |        15 |
+|       2 | Rich Dad, Poor Dad     | James Thompson |        17 |
+|       3 | The Merchant of Venice | W. Shakespeare |        12 |
+|       4 | The Malgudi Days       | R.K. Narayan   |        13 |
++---------+------------------------+----------------+-----------+
+4 rows in set (0.00 sec)
+
+mysql> use attendance;
+Database changed
+mysql> create table students(Student_ID int, Student_Name varchar(255), Present varchar(255));
+Query OK, 0 rows affected (0.74 sec)
+
+mysql> insert into students values (01, 'Abraham Khatti', 'A');
+Query OK, 1 row affected (0.08 sec)
+
+mysql> insert into students values (02, 'Arpan Sisodiya', 'A');
+Query OK, 1 row affected (0.05 sec)
+
+mysql> insert into students values (03, 'Raj Nikam', 'P');
+Query OK, 1 row affected (0.02 sec)
+
+mysql> insert into students values (04, 'John Dsouza', 'P');
+Query OK, 1 row affected (0.02 sec)
+
+mysql> insert into students values (05, 'ABC XYZ', 'A');
+Query OK, 1 row affected (0.04 sec)
+mysql> create procedure mark_attendance(ID int)  language sql modifies sql data UPDATE STUDENTS SET PRESENT='P' WHERE STUDENT_ID=ID;
+Query OK, 0 rows affected (0.06 sec)
+
+mysql> CALL MARK_ATTENDANCE(1);
+Query OK, 1 row affected (0.04 sec)
+
+mysql> SELECT * FROM STUDENTS;
++------------+----------------+---------+
+| Student_ID | Student_Name   | Present |
++------------+----------------+---------+
+|          1 | Abraham Khatti | P       |
+|          2 | Arpan Sisodiya | A       |
+|          3 | Raj Nikam      | P       |
+|          4 | John Dsouza    | P       |
+|          5 | ABC XYZ        | A       |
++------------+----------------+---------+
+5 rows in set (0.01 sec)
+
+mysql> CALL MARK_ATTENDANCE(5);
+Query OK, 1 row affected (0.03 sec)
+
+mysql> SELECT * FROM STUDENTS;
++------------+----------------+---------+
+| Student_ID | Student_Name   | Present |
++------------+----------------+---------+
+|          1 | Abraham Khatti | P       |
+|          2 | Arpan Sisodiya | A       |
+|          3 | Raj Nikam      | P       |
+|          4 | John Dsouza    | P       |
+|          5 | ABC XYZ        | P       |
++------------+----------------+---------+
+5 rows in set (0.00 sec)

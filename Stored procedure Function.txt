@@ -1,0 +1,355 @@
+Name: Abraham Khatti
+Class: SE-IT
+Assignment: 09
+Write and execute PL/SQL stored procedure and function to perform a
+suitable task on the database. Demonstrate its use
+
+
+mysql> use stored_procedures;
+Database changed
+
+mysql> select * from customers;
++-------------+----------------+------------------+
+| Customer_ID | Customer_name  | Customer_Country |
++-------------+----------------+------------------+
+|           1 | Raj Prakash    | India            |
+|           2 | Alex Pruitt    | UK               |
+|           3 | Viraj Gaidhani | India            |
+|           4 | Saksham Yadav  | India            |
+|           5 | Ernest Victor  | Australia        |
++-------------+----------------+------------------+
+5 rows in set (0.00 sec)
+
+mysql> create procedure sp(cnt varchar(100)) LANGUAGE SQL MODIFIES SQL DATA select * from customers where Customer_Country="India";
+Query OK, 0 rows affected (0.45 sec)
+
+mysql> CALL SP("INDIA");
++-------------+----------------+------------------+
+| Customer_ID | Customer_name  | Customer_Country |
++-------------+----------------+------------------+
+|           1 | Raj Prakash    | India            |
+|           3 | Viraj Gaidhani | India            |
+|           4 | Saksham Yadav  | India            |
++-------------+----------------+------------------+
+3 rows in set (0.17 sec)
+
+mysql> create procedure sp1(cnt varchar(100)) LANGUAGE SQL MODIFIES SQL DATA select * from customers where Customer_Country=cnt;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> call sp1("australia");
++-------------+---------------+------------------+
+| Customer_ID | Customer_name | Customer_Country |
++-------------+---------------+------------------+
+|           5 | Ernest Victor | Australia        |
++-------------+---------------+------------------+
+1 row in set (0.00 sec)
+
+mysql> use stored_procedures;
+Database changed
+
+mysql> select * from continent;
++------+-------------+
+| C_ID | Country     |
++------+-------------+
+|    1 | Afghanistan |
+|    1 | Armenia     |
+|    1 | India       |
++------+-------------+
+3 rows in set (0.00 sec)
+
+mysql> insert into continent values('1','Bhutan');
+Query OK, 1 row affected (0.03 sec)
+
+mysql> insert into continent values('1','Bangladesh');
+Query OK, 1 row affected (0.03 sec)
+
+mysql> insert into continent values('2','France');
+Query OK, 1 row affected (0.03 sec)
+
+mysql> insert into continent values('2','Italy');
+Query OK, 1 row affected (0.03 sec)
+
+mysql> insert into continent values('2','Ukraine');
+Query OK, 1 row affected (0.03 sec)
+
+mysql> insert into continent values('2','Romania');
+Query OK, 1 row affected (0.03 sec)
+
+mysql> select * from continent;
++------+-------------+
+| C_ID | Country     |
++------+-------------+
+|    1 | Afghanistan |
+|    1 | Armenia     |
+|    1 | India       |
+|    1 | Bhutan      |
+|    1 | Bangladesh  |
+|    2 | France      |
+|    2 | Italy       |
+|    2 | Ukraine     |
+|    2 | Romania     |
++------+-------------+
+9 rows in set (0.00 sec)
+
+mysql> create procedure asia_c (id int) LANGUAGE SQL MODIFIES SQL DATA select * from continent where C_ID=id group by Country;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> call asia_c(1);
++------+-------------+
+| C_ID | Country     |
++------+-------------+
+|    1 | Afghanistan |
+|    1 | Armenia     |
+|    1 | Bangladesh  |
+|    1 | Bhutan      |
+|    1 | India       |
++------+-------------+
+5 rows in set (0.03 sec)
+
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> create procedure asia_c1 (id int) LANGUAGE SQL MODIFIES SQL DATA select C_ID,Country from continent where C_ID=id group by Country;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> call asia_c1(1);
++------+-------------+
+| C_ID | Country     |
++------+-------------+
+|    1 | Afghanistan |
+|    1 | Armenia     |
+|    1 | Bangladesh  |
+|    1 | Bhutan      |
+|    1 | India       |
++------+-------------+
+5 rows in set (0.00 sec)
+
+mysql> create database hospital;
+Query OK, 1 row affected (0.07 sec)
+
+mysql> use hospital;
+Database changed
+mysql> create table patient(Patient_ID Int, Name varchar(100), Age int, Gender varchar(100), Address varchar(100), Disease varchar(100), Doctor_ID int);
+Query OK, 0 rows affected (0.53 sec)
+
+mysql> insert into patient values ('1', 'Reema', '23', 'Female', 'Surat', 'Fever', 21);
+Query OK, 1 row affected (0.04 sec)
+
+mysql> insert into patient values ('2', 'Kusum', '50', 'Female', 'Vadodara', 'Heart Failure', 22);
+Query OK, 1 row affected (0.03 sec)
+
+mysql> insert into patient values ('3', 'Carlin', '43', 'Male', 'Vapi', 'Infection', 23);
+Query OK, 1 row affected (0.03 sec)
+
+mysql> insert into patient values ('4', 'Rahul', '26', 'Male', 'Navsari', 'Cancer', 21);
+Query OK, 1 row affected (0.03 sec)
+
+mysql> insert into patient values ('5', 'Hansha', '55', 'female', 'Vapi', 'Diabetes', 22);
+Query OK, 1 row affected (0.03 sec)
+
+mysql> select  * from patient;
++------------+--------+------+--------+----------+---------------+-----------+
+| Patient_ID | Name   | Age  | Gender | Address  | Disease       | Doctor_ID |
++------------+--------+------+--------+----------+---------------+-----------+
+|          1 | Reema  |   23 | Female | Surat    | Fever         |        21 |
+|          2 | Kusum  |   50 | Female | Vadodara | Heart Failure |        22 |
+|          3 | Carlin |   43 | Male   | Vapi     | Infection     |        23 |
+|          4 | Rahul  |   26 | Male   | Navsari  | Cancer        |        21 |
+|          5 | Hansha |   55 | female | Vapi     | Diabetes      |        22 |
++------------+--------+------+--------+----------+---------------+-----------+
+5 rows in set (0.00 sec)
+
+mysql> create table doctor (Doctor_ID Int, Name varchar(100), Age int, Gender varchar(100), Address varchar(100));
+Query OK, 0 rows affected (0.21 sec)
+
+mysql> insert into doctor values ('21', 'Asif', '55', 'Male', 'Baruch');
+Query OK, 1 row affected (0.03 sec)
+
+mysql> insert into doctor values ('22', 'Dhawal', '40', 'Male', 'Surat');
+Query OK, 1 row affected (0.03 sec)
+
+mysql> insert into doctor values ('23', 'Krishna', '39', 'Female', 'Surat');
+Query OK, 1 row affected (0.05 sec)
+
+mysql> insert into doctor values ('24', 'Lissa', '35', 'Female', 'Navsari');
+Query OK, 1 row affected (0.03 sec)
+
+mysql> insert into doctor values ('25', 'Leeba', '34', 'Female', 'Baruch');
+Query OK, 1 row affected (0.03 sec)
+
+mysql> insert into doctor values ('26', 'Vini', '33', 'Female', 'Baruch');
+Query OK, 1 row affected (0.05 sec)
+
+mysql> insert into doctor values ('27', 'Dhiren', '32', 'Male', 'Navsari');
+Query OK, 1 row affected (0.03 sec)
+
+mysql> create table bill (Bill_No int, Patient_ID int, Doctor_ID int, Room_charge int, no_of_days int);
+Query OK, 0 rows affected (0.24 sec)
+
+mysql> insert into bill values ('5005', '1', '340', '500', '4');
+Query OK, 1 row affected (0.03 sec)
+
+mysql> insert into bill values ('5006', '2', '600', '480', '8');
+Query OK, 1 row affected (0.04 sec)
+
+mysql> insert into bill values ('5008', '3', '800', '340', '3');
+Query OK, 1 row affected (0.03 sec)
+
+mysql> insert into bill values ('5009', '4', '780', '890', '6');
+Query OK, 1 row affected (0.03 sec)
+
+mysql> insert into bill values ('5010', '3', '400', '900', '1');
+Query OK, 1 row affected (0.03 sec)
+
+mysql> insert into bill values ('5011', '1', '200', '300', '1');
+Query OK, 1 row affected (0.03 sec)
+
+mysql> insert into bill values ('5012', '2', '600', '110', '2');
+Query OK, 1 row affected (0.04 sec)
+
+mysql> insert into bill values ('5013', '3', '330', '210', '1');
+Query OK, 1 row affected (0.03 sec)
+
+mysql> insert into bill values ('5014', '1', '230', '340', '2');
+Query OK, 1 row affected (0.04 sec)
+
+mysql> create table laboratory(lan_no int, patient_id int, doctor_id int, Date date, Amount int);
+Query OK, 0 rows affected (0.27 sec)
+
+mysql> insert into laboratory values (10,1,21,'2000-02-02',4000);
+Query OK, 1 row affected (0.03 sec)
+
+mysql> insert into laboratory values (20,2,21,'2001-09-02',4000);
+Query OK, 1 row affected (0.03 sec)
+
+mysql> insert into laboratory values (30,3,22,'2001-03-03',600);
+Query OK, 1 row affected (0.03 sec)
+
+mysql> insert into laboratory values (40,1,23,'2002-06-03',800);
+Query OK, 1 row affected (0.03 sec)
+
+mysql> insert into laboratory values (50,4,21,'2003-07-05',900);
+Query OK, 1 row affected (0.03 sec)
+
+mysql> insert into laboratory values (60,2,25,'2004-04-10',550);
+Query OK, 1 row affected (0.03 sec)
+
+mysql> insert into laboratory values (70,4,22,'2005-04-03',950);
+Query OK, 1 row affected (0.06 sec)
+
+mysql> select * from laboratory;
++--------+------------+-----------+------------+--------+
+| lan_no | patient_id | doctor_id | Date       | Amount |
++--------+------------+-----------+------------+--------+
+|     10 |          1 |        21 | 2000-02-02 |   4000 |
+|     20 |          2 |        21 | 2001-09-02 |   4000 |
+|     30 |          3 |        22 | 2001-03-03 |    600 |
+|     40 |          1 |        23 | 2002-06-03 |    800 |
+|     50 |          4 |        21 | 2003-07-05 |    900 |
+|     60 |          2 |        25 | 2004-04-10 |    550 |
+|     70 |          4 |        22 | 2005-04-03 |    950 |
++--------+------------+-----------+------------+--------+
+7 rows in set (0.00 sec)
+
+mysql> create procedure hosp() language sql modifies sql data select * from patient;
+Query OK, 0 rows affected (0.11 sec)
+
+mysql> call hosp();
++------------+--------+------+--------+----------+---------------+-----------+
+| Patient_ID | Name   | Age  | Gender | Address  | Disease       | Doctor_ID |
++------------+--------+------+--------+----------+---------------+-----------+
+|          1 | Reema  |   23 | Female | Surat    | Fever         |        21 |
+|          2 | Kusum  |   50 | Female | Vadodara | Heart Failure |        22 |
+|          3 | Carlin |   43 | Male   | Vapi     | Infection     |        23 |
+|          4 | Rahul  |   26 | Male   | Navsari  | Cancer        |        21 |
+|          5 | Hansha |   55 | female | Vapi     | Diabetes      |        22 |
++------------+--------+------+--------+----------+---------------+-----------+
+5 rows in set (0.03 sec)
+
+Query OK, 0 rows affected (0.05 sec)
+
+mysql> create procedure hosp1(gnd varchar(100)) language sql modifies sql data select * from patient where gender=@gnd;
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> call hosp1('Female');
+Empty set (0.00 sec)
+
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> create procedure hosp2(gnd varchar(100)) language sql modifies sql data select * from patient where gender=gnd;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> call hosp2('female');
++------------+--------+------+--------+----------+---------------+-----------+
+| Patient_ID | Name   | Age  | Gender | Address  | Disease       | Doctor_ID |
++------------+--------+------+--------+----------+---------------+-----------+
+|          1 | Reema  |   23 | Female | Surat    | Fever         |        21 |
+|          2 | Kusum  |   50 | Female | Vadodara | Heart Failure |        22 |
+|          5 | Hansha |   55 | female | Vapi     | Diabetes      |        22 |
++------------+--------+------+--------+----------+---------------+-----------+
+3 rows in set (0.00 sec)
+
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> create procedure hosp3 (p_id int, p_name varchar(100), age int, gnd varchar(100), address varchar(100), disease varchar(100), d_id int) language sql modifies sql data insert into patient values (p_id, p_name, age, gnd, address, disease, d_id);
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> call hosp3(9, 'Annie', 67, 'Female', 'Virar', 'Checkup', '21');
+Query OK, 1 row affected (0.04 sec)
+
+mysql> select * from patient;
++------------+--------+------+--------+----------+---------------+-----------+
+| Patient_ID | Name   | Age  | Gender | Address  | Disease       | Doctor_ID |
++------------+--------+------+--------+----------+---------------+-----------+
+|          1 | Reema  |   23 | Female | Surat    | Fever         |        21 |
+|          2 | Kusum  |   50 | Female | Vadodara | Heart Failure |        22 |
+|          3 | Carlin |   43 | Male   | Vapi     | Infection     |        23 |
+|          4 | Rahul  |   26 | Male   | Navsari  | Cancer        |        21 |
+|          5 | Hansha |   55 | female | Vapi     | Diabetes      |        22 |
+|          9 | Annie  |   67 | Female | Virar    | Checkup       |        21 |
++------------+--------+------+--------+----------+---------------+-----------+
+6 rows in set (0.00 sec)
+
+mysql> create procedure hosp4 (p_id int, p_name varchar(100), age int, gnd varchar(100), address varchar(100), disease varchar(100), d_id int) language sql modifies sql data insert into patient values (p_id, p_name, age, gnd, address, disease, d_id);
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> call hosp4(9, 'Annie', 67, 'Female', 'Virar', 'Checkup', '21');
+Query OK, 1 row affected (0.03 sec)
+
+mysql> select * from patient;
++------------+--------+------+--------+----------+---------------+-----------+
+| Patient_ID | Name   | Age  | Gender | Address  | Disease       | Doctor_ID |
++------------+--------+------+--------+----------+---------------+-----------+
+|          1 | Reema  |   23 | Female | Surat    | Fever         |        21 |
+|          2 | Kusum  |   50 | Female | Vadodara | Heart Failure |        22 |
+|          3 | Carlin |   43 | Male   | Vapi     | Infection     |        23 |
+|          4 | Rahul  |   26 | Male   | Navsari  | Cancer        |        21 |
+|          5 | Hansha |   55 | female | Vapi     | Diabetes      |        22 |
+|          9 | Annie  |   67 | Female | Virar    | Checkup       |        21 |
+|          9 | Annie  |   67 | Female | Virar    | Checkup       |        21 |
++------------+--------+------+--------+----------+---------------+-----------+
+7 rows in set (0.00 sec)
+
+mysql> select * from patient;
++------------+--------+------+--------+----------+---------------+-----------+
+| Patient_ID | Name   | Age  | Gender | Address  | Disease       | Doctor_ID |
++------------+--------+------+--------+----------+---------------+-----------+
+|          1 | Reema  |   23 | Female | Surat    | Fever         |        21 |
+|          2 | Kusum  |   50 | Female | Vadodara | Heart Failure |        22 |
+|          3 | Carlin |   43 | Male   | Vapi     | Infection     |        23 |
+|          4 | Rahul  |   26 | Male   | Navsari  | Cancer        |        21 |
+|          5 | Hansha |   55 | female | Vapi     | Diabetes      |        22 |
+|          9 | Annie  |   67 | Female | Virar    | Checkup       |        21 |
+|          9 | Annie  |   67 | Female | Virar    | Checkup       |        21 |
++------------+--------+------+--------+----------+---------------+-----------+
+7 rows in set (0.00 sec)
+
+mysql> create procedure hosp5(p_id int) language sql modifies sql data select sum(amount) from laboratory where patient_id=p_id;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> call hosp5(1);
++-------------+
+| sum(amount) |
++-------------+
+|        4800 |
++-------------+
+1 row in set (0.00 sec)

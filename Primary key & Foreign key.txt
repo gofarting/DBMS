@@ -1,0 +1,316 @@
+Name: Abraham Khatti
+Class: SE-IT
+Assignment: 06
+Create Table with primary key and foreign key constraints. a. Alter table
+with add n modify b. Drop table
+
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| ab1                |
+| author             |
+| bank               |
+| bankmanagement     |
+| db1                |
+| demo               |
+| lib                |
+| library            |
+| mysql              |
+| performance_schema |
+| r                  |
+| student            |
+| sys                |
+| workshop           |
+| workshop1          |
++--------------------+
+16 rows in set (0.25 sec)
+
+mysql> create database Showroom;
+Query OK, 1 row affected (0.02 sec)
+
+mysql> use showroom;
+Database changed
+mysql> create table Dealer(Dealer_ID int, Brand_Name varchar(100));
+Query OK, 0 rows affected (0.46 sec)
+
+mysql> create table Manager(Manager_ID int, Manages_employee int);
+Query OK, 0 rows affected (0.20 sec)
+
+mysql> create table client(Cust_ID int, Cust_Name varchar(100), Cust_Cell int);
+Query OK, 0 rows affected (0.21 sec)
+
+mysql> desc client;
++-----------+--------------+------+-----+---------+-------+
+| Field     | Type         | Null | Key | Default | Extra |
++-----------+--------------+------+-----+---------+-------+
+| Cust_ID   | int(11)      | YES  |     | NULL    |       |
+| Cust_Name | varchar(100) | YES  |     | NULL    |       |
+| Cust_Cell | int(11)      | YES  |     | NULL    |       |
++-----------+--------------+------+-----+---------+-------+
+3 rows in set (0.09 sec)
+
+mysql> desc dealer;
++------------+--------------+------+-----+---------+-------+
+| Field      | Type         | Null | Key | Default | Extra |
++------------+--------------+------+-----+---------+-------+
+| Dealer_ID  | int(11)      | YES  |     | NULL    |       |
+| Brand_Name | varchar(100) | YES  |     | NULL    |       |
++------------+--------------+------+-----+---------+-------+
+2 rows in set (0.03 sec)
+
+mysql> desc manager;
++------------------+---------+------+-----+---------+-------+
+| Field            | Type    | Null | Key | Default | Extra |
++------------------+---------+------+-----+---------+-------+
+| Manager_ID       | int(11) | YES  |     | NULL    |       |
+| Manages_employee | int(11) | YES  |     | NULL    |       |
++------------------+---------+------+-----+---------+-------+
+2 rows in set (0.05 sec)
+
+mysql> create table Employee(Emp_ID int, Name varchar(100), Service varchar(100));
+Query OK, 0 rows affected (0.21 sec)
+
+mysql> desc Employee;
++---------+--------------+------+-----+---------+-------+
+| Field   | Type         | Null | Key | Default | Extra |
++---------+--------------+------+-----+---------+-------+
+| Emp_ID  | int(11)      | YES  |     | NULL    |       |
+| Name    | varchar(100) | YES  |     | NULL    |       |
+| Service | varchar(100) | YES  |     | NULL    |       |
++---------+--------------+------+-----+---------+-------+
+3 rows in set (0.00 sec)
+
+mysql> insert into Dealer values(1, 'Toyota');
+Query OK, 1 row affected (0.09 sec)
+
+mysql> select * from dealer;
++-----------+------------+
+| Dealer_ID | Brand_Name |
++-----------+------------+
+|         1 | Toyota     |
++-----------+------------+
+1 row in set (0.00 sec)
+
+mysql> insert into Employee values (101, 'Suresh', 'Sales');
+Query OK, 1 row affected (0.03 sec)
+
+mysql> insert into Employee values (102, 'Akash', 'Workshop');
+Query OK, 1 row affected (0.06 sec)
+
+mysql> insert into Employee values(103, 'Viraj', 'Denting');
+Query OK, 1 row affected (0.03 sec)
+
+mysql> select * from Employee;
++--------+--------+----------+
+| Emp_ID | Name   | Service  |
++--------+--------+----------+
+|    101 | Suresh | Sales    |
+|    102 | Akash  | Workshop |
+|    103 | Viraj  | Denting  |
++--------+--------+----------+
+3 rows in set (0.00 sec)
+
+mysql> alter table manager add Manager_Name varchar(100);
+Query OK, 0 rows affected (0.45 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> desc manager;
++------------------+--------------+------+-----+---------+-------+
+| Field            | Type         | Null | Key | Default | Extra |
++------------------+--------------+------+-----+---------+-------+
+| Manager_ID       | int(11)      | YES  |     | NULL    |       |
+| Manages_employee | int(11)      | YES  |     | NULL    |       |
+| Manager_Name     | varchar(100) | YES  |     | NULL    |       |
++------------------+--------------+------+-----+---------+-------+
+3 rows in set (0.00 sec)
+
+mysql> insert into manager values(202, 101, 'Suresh');
+Query OK, 1 row affected (0.03 sec)
+
+mysql> select * from manager;
++------------+------------------+--------------+
+| Manager_ID | Manages_employee | Manager_Name |
++------------+------------------+--------------+
+|        202 |              101 | Suresh       |
++------------+------------------+--------------+
+1 row in set (0.00 sec)
+
+mysql> desc client;
++-----------+--------------+------+-----+---------+-------+
+| Field     | Type         | Null | Key | Default | Extra |
++-----------+--------------+------+-----+---------+-------+
+| Cust_ID   | int(11)      | YES  |     | NULL    |       |
+| Cust_Name | varchar(100) | YES  |     | NULL    |       |
+| Cust_Cell | int(11)      | YES  |     | NULL    |       |
++-----------+--------------+------+-----+---------+-------+
+3 rows in set (0.00 sec)
+
+mysql> insert into client(1, 'Alex Pruitt', 777);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '1, 'Alex Pruitt', 777)' at line 1
+mysql> insert into client values (1, 'Alex Pruitt', 777);
+Query OK, 1 row affected (0.03 sec)
+
+mysql> insert into client values (2, 'Rais Sheikh', 888);
+Query OK, 1 row affected (0.03 sec)
+
+mysql> insert into client values (3, 'Akash', 999);
+Query OK, 1 row affected (0.03 sec)
+
+mysql> select * from client;
++---------+-------------+-----------+
+| Cust_ID | Cust_Name   | Cust_Cell |
++---------+-------------+-----------+
+|       1 | Alex Pruitt |       777 |
+|       2 | Rais Sheikh |       888 |
+|       3 | Akash       |       999 |
++---------+-------------+-----------+
+3 rows in set (0.00 sec)
+
+mysql> alter table manager change column Manages_employee Emp_ID int;
+Query OK, 0 rows affected (0.10 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> desc manager;
++--------------+--------------+------+-----+---------+-------+
+| Field        | Type         | Null | Key | Default | Extra |
++--------------+--------------+------+-----+---------+-------+
+| Manager_ID   | int(11)      | YES  |     | NULL    |       |
+| Emp_ID       | int(11)      | YES  |     | NULL    |       |
+| Manager_Name | varchar(100) | YES  |     | NULL    |       |
++--------------+--------------+------+-----+---------+-------+
+3 rows in set (0.01 sec)
+
+mysql> alter table employee add primary key(Emp_ID);
+Query OK, 0 rows affected (0.55 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> desc employee;
++---------+--------------+------+-----+---------+-------+
+| Field   | Type         | Null | Key | Default | Extra |
++---------+--------------+------+-----+---------+-------+
+| Emp_ID  | int(11)      | NO   | PRI | NULL    |       |
+| Name    | varchar(100) | YES  |     | NULL    |       |
+| Service | varchar(100) | YES  |     | NULL    |       |
++---------+--------------+------+-----+---------+-------+
+3 rows in set (0.01 sec)
+
+mysql> ALTER TABLE employee DROP PRIMARY KEY;
+Query OK, 3 rows affected (0.84 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+mysql>
+mysql> desc employee;
++---------+--------------+------+-----+---------+-------+
+| Field   | Type         | Null | Key | Default | Extra |
++---------+--------------+------+-----+---------+-------+
+| Emp_ID  | int(11)      | NO   |     | NULL    |       |
+| Name    | varchar(100) | YES  |     | NULL    |       |
+| Service | varchar(100) | YES  |     | NULL    |       |
++---------+--------------+------+-----+---------+-------+
+3 rows in set (0.02 sec)
+
+mysql> alter table employee add constraint pk_employee_emp_id primary key(emp_id);
+Query OK, 0 rows affected (0.47 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> desc employee;
++---------+--------------+------+-----+---------+-------+
+| Field   | Type         | Null | Key | Default | Extra |
++---------+--------------+------+-----+---------+-------+
+| Emp_ID  | int(11)      | NO   | PRI | NULL    |       |
+| Name    | varchar(100) | YES  |     | NULL    |       |
+| Service | varchar(100) | YES  |     | NULL    |       |
++---------+--------------+------+-----+---------+-------+
+3 rows in set (0.00 sec)
+
+mysql> select * from employee;
++--------+--------+----------+
+| Emp_ID | Name   | Service  |
++--------+--------+----------+
+|    101 | Suresh | Sales    |
+|    102 | Akash  | Workshop |
+|    103 | Viraj  | Denting  |
++--------+--------+----------+
+3 rows in set (0.00 sec)
+
+mysql> alter table manager add constraint foreign key(emp_id) references employee (emp_id);
+Query OK, 1 row affected (0.63 sec)
+Records: 1  Duplicates: 0  Warnings: 0
+
+mysql> desc manager;
++--------------+--------------+------+-----+---------+-------+
+| Field        | Type         | Null | Key | Default | Extra |
++--------------+--------------+------+-----+---------+-------+
+| Manager_ID   | int(11)      | YES  |     | NULL    |       |
+| Emp_ID       | int(11)      | YES  | MUL | NULL    |       |
+| Manager_Name | varchar(100) | YES  |     | NULL    |       |
++--------------+--------------+------+-----+---------+-------+
+3 rows in set (0.00 sec)
+
+mysql> select * from manager;
++------------+--------+--------------+
+| Manager_ID | Emp_ID | Manager_Name |
++------------+--------+--------------+
+|        202 |    101 | Suresh       |
++------------+--------+--------------+
+1 row in set (0.00 sec)
+
+mysql> alter table client add column Dealer_ID int;
+Query OK, 0 rows affected (0.60 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> alter table dealer add constraint pk_dealer_dealer_id primary key(dealer_id);
+Query OK, 0 rows affected (0.48 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> desc dealer;
++------------+--------------+------+-----+---------+-------+
+| Field      | Type         | Null | Key | Default | Extra |
++------------+--------------+------+-----+---------+-------+
+| Dealer_ID  | int(11)      | NO   | PRI | NULL    |       |
+| Brand_Name | varchar(100) | YES  |     | NULL    |       |
++------------+--------------+------+-----+---------+-------+
+2 rows in set (0.00 sec)
+
+Query OK, 3 rows affected (0.67 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+mysql> desc client;
++-----------+--------------+------+-----+---------+-------+
+| Field     | Type         | Null | Key | Default | Extra |
++-----------+--------------+------+-----+---------+-------+
+| Cust_ID   | int(11)      | YES  |     | NULL    |       |
+| Cust_Name | varchar(100) | YES  |     | NULL    |       |
+| Cust_Cell | int(11)      | YES  |     | NULL    |       |
+| Dealer_ID | int(11)      | YES  | MUL | NULL    |       |
++-----------+--------------+------+-----+---------+-------+
+4 rows in set (0.00 sec)
+
+mysql> alter table manager add column dealer_id int;
+Query OK, 0 rows affected (0.69 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> alter table manager add constraint foreign key (dealer_id) references dealer(dealer_id);
+Query OK, 1 row affected (0.65 sec)
+Records: 1  Duplicates: 0  Warnings: 0
+
+mysql> desc manager;
++--------------+--------------+------+-----+---------+-------+
+| Field        | Type         | Null | Key | Default | Extra |
++--------------+--------------+------+-----+---------+-------+
+| Manager_ID   | int(11)      | YES  |     | NULL    |       |
+| Emp_ID       | int(11)      | YES  | MUL | NULL    |       |
+| Manager_Name | varchar(100) | YES  |     | NULL    |       |
+| dealer_id    | int(11)      | YES  | MUL | NULL    |       |
++--------------+--------------+------+-----+---------+-------+
+4 rows in set (0.00 sec)
+
+mysql> alter table employee add column dealer_id int;
+Query OK, 0 rows affected (0.51 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> alter table employee add constraint foreign key (dealer_id) references dealer(dealer_id);
+Query OK, 3 rows affected (0.68 sec)
+Records: 3  Duplicates: 0  Warnings: 0

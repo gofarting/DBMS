@@ -1,0 +1,206 @@
+1NF
+mysql> create database normalization;
+Query OK, 1 row affected (0.01 sec)
+mysql> use normalization;
+Database changed
+mysql> create table teachers(t_id int, t_name varchar(100), t_phone varchar(100));
+Query OK, 0 rows affected (0.39 sec)
+mysql> insert into teachers values ('101' , 'Anup', '9009,8008');
+Query OK, 1 row affected (0.08 sec)
+mysql> insert into teachers values ('201' , 'Anurag', '1001');
+Query OK, 1 row affected (0.05 sec)
+mysql> insert into teachers values ('301' , 'Saurav','8008');
+Query OK, 1 row affected (0.03 sec)
+mysql> create table 1nf(t_id int, t_name varchar(100), t_phone varchar(100));
+Query OK, 0 rows affected (0.20 sec)
+mysql> insert into 1nf values ('101' , 'Anup', '9009');
+Query OK, 1 row affected (0.04 sec)
+mysql> insert into 1nf values ('101' , 'Anup', '8008');
+Query OK, 1 row affected (0.03 sec)
+mysql> insert into 1nf values ('201' , 'Anurag', '1001');
+Query OK, 1 row affected (0.03 sec)
+mysql> insert into 1nf values ('301' , 'Saurav','2002');
+Query OK, 1 row affected (0.03 sec)
+mysql> select * from teachers;
++------+--------+-----------+
+| t_id | t_name | t_phone |
++------+--------+-----------+
+| 101 | Anup | 9009,8008 |
+| 201 | Anurag | 1001 |
+| 301 | Saurav | 8008 |
++------+--------+-----------+
+3 rows in set (0.03 sec)
+mysql> select * from 1nf;
++------+--------+---------+
+| t_id | t_name | t_phone |
++------+--------+---------+
+| 101 | Anup | 9009 |
+| 101 | Anup | 8008 |
+| 201 | Anurag | 1001 |
+| 301 | Saurav | 2002 |
++------+--------+---------+
+4 rows in set (0.00 sec)
+2NF
+mysql> use normalization;
+Database changed
+mysql> create table Customer(C_ID int, C_name varchar(100), Item varchar(100),
+Supplier varchar(100));
+Query OK, 0 rows affected (0.24 sec)
+mysql> insert into Customer values ('1', 'Amol', 'Xbox', 'Microsoft');
+Query OK, 1 row affected (0.05 sec)
+mysql> insert into Customer values ('2', 'Rakesh', 'PS4', 'Sony');
+Query OK, 1 row affected (0.03 sec)
+mysql> insert into Customer values ('3', 'Elbert', 'Xbox', 'Microsoft');
+Query OK, 1 row affected (0.03 sec)
+mysql> select * from customer;
++------+--------+------+-----------+
+| C_ID | C_name | Item | Supplier |
++------+--------+------+-----------+
+| 1 | Amol | Xbox | Microsoft |
+| 2 | Rakesh | PS4 | Sony |
+| 3 | Elbert | Xbox | Microsoft |
++------+--------+------+-----------+
+3 rows in set (0.00 sec)
+mysql> create table 2NFA(C_ID int, C_name varchar(100));
+Query OK, 0 rows affected (0.28 sec)
+mysql> insert into 2NFA values('1', 'Amol');
+Query OK, 1 row affected (0.05 sec)
+mysql> insert into 2NFA values('2', 'Rakesh');
+Query OK, 1 row affected (0.03 sec)
+mysql> insert into 2NFA values('3', 'Elbert;');
+Query OK, 1 row affected (0.03 sec)
+mysql> create table 2NFB(C_ID int, Item varchar(100));
+Query OK, 0 rows affected (0.30 sec)
+mysql> insert into 2NFB values('1', 'Xbox');
+Query OK, 1 row affected (0.03 sec)
+mysql> insert into 2NFB values('2', 'PS4');
+Query OK, 1 row affected (0.03 sec)
+mysql> insert into 2NFB values('3', 'Xbox');
+Query OK, 1 row affected (0.05 sec)
+mysql> create table 2NFC(Item varchar(100), Supplier varchar(100));
+Query OK, 0 rows affected (0.21 sec)
+mysql> insert into 2NFC values('Xbox', 'Microsoft');
+Query OK, 1 row affected (0.03 sec)
+mysql> insert into 2NFC values('PS4', 'Sony');
+Query OK, 1 row affected (0.03 sec)
+mysql> select * from Customer;
++------+--------+------+-----------+
+| C_ID | C_name | Item | Supplier |
++------+--------+------+-----------+
+| 1 | Amol | Xbox | Microsoft |
+| 2 | Rakesh | PS4 | Sony |
+| 3 | Elbert | Xbox | Microsoft |
++------+--------+------+-----------+
+3 rows in set (0.00 sec)
+mysql> select * from 2NFA;
++------+---------+
+| C_ID | C_name |
++------+---------+
+| 1 | Amol |
+| 2 | Rakesh |
+| 3 | Elbert; |
++------+---------+
+3 rows in set (0.00 sec)
+mysql> select * from 2NFB;
++------+------+
+| C_ID | Item |
++------+------+
+| 1 | Xbox |
+| 2 | PS4 |
+| 3 | Xbox |
++------+------+
+3 rows in set (0.00 sec)
+mysql> select * from 2NFC;
++------+-----------+
+| Item | Supplier |
++------+-----------+
+| Xbox | Microsoft |
+| PS4 | Sony |
++------+-----------+
+2 rows in set (0.00 sec)
+3NF
+mysql> use normalization;
+Database changed
+mysql> create table Employees
+-> (E_ID int, E_Name varchar(100), E_Zip int, E_City varchar(100));
+Query OK, 0 rows affected (0.74 sec)
+mysql> insert into Employees values ('01', 'Ramesh', '500001', 'Hyderabad');\
+Query OK, 1 row affected (0.04 sec)
+mysql> insert into Employees values ('02', 'Alwin', '422006', 'Nashik');
+Query OK, 1 row affected (0.03 sec)
+mysql> insert into Employees values ('03', 'Ranjan', '467833', 'Chennai');
+Query OK, 1 row affected (0.03 sec)
+mysql> create table 3NFA(E_ID int, E_Name varchar(100));
+Query OK, 0 rows affected (0.24 sec)
+mysql> insert into 3NFA values('01', 'Ramesh');
+Query OK, 1 row affected (0.03 sec)
+mysql> insert into 3NFA values('02', 'Alwin');
+Query OK, 1 row affected (0.03 sec)
+mysql> insert into 3NFA values('03', 'Ranjan');
+Query OK, 1 row affected (0.03 sec)
+mysql> create table 3NFB(E_Zip int, E_City varchar(100));
+Query OK, 0 rows affected (0.38 sec)
+mysql> insert into 3NFB values ('500001', 'Hyderabad');
+Query OK, 1 row affected (0.03 sec)
+mysql> insert into 3NFB values ('422006', 'Nashik');
+Query OK, 1 row affected (0.03 sec)
+mysql> insert into 3NFB values ('467833', 'Chennai');
+Query OK, 1 row affected (0.03 sec)
+mysql> select * from Employees;
++------+--------+--------+-----------+
+| E_ID | E_Name | E_Zip | E_City |
++------+--------+--------+-----------+
+| 1 | Ramesh | 500001 | Hyderabad |
+| 2 | Alwin | 422006 | Nashik |
+| 3 | Ranjan | 467833 | Chennai |
++------+--------+--------+-----------+
+3 rows in set (0.00 sec)
+mysql> select * from 3NFA;
++------+--------+
+| E_ID | E_Name |
++------+--------+
+| 1 | Ramesh |
+| 2 | Alwin |
+| 3 | Ranjan |
++------+--------+
+3 rows in set (0.00 sec)
+mysql> select * from 3NFB;
++--------+-----------+
+| E_Zip | E_City |
++--------+-----------+
+| 500001 | Hyderabad |
+| 422006 | Nashik |
+| 467833 | Chennai |
++--------+-----------+
+3 rows in set (0.00 sec)
+BCNF
+mysql> use bcnf;
+Database changed
+mysql> select * from details;
++---------+-----------------+---------+
+| Student | Teacher | Subject |
++---------+-----------------+---------+
+| Akash | P.Ramesh | C |
+| Akash | K. Venkateshwar | C++ |
+| Viraj | K. Venkateshwar | C++ |
+| Viraj | P.Ramesh | C |
++---------+-----------------+---------+
+4 rows in set (0.02 sec)
+mysql> select * from Teacher;
++----------------+---------+
+| Teacher | Subject |
++----------------+---------+
+| P.Ramesh | C |
+| K.Venkateshwar | C++ |
++----------------+---------+
+2 rows in set (0.02 sec)
+mysql> select * from stud;
++---------+---------+
+| Student | Subject |
++---------+---------+
+| Akash | C |
+| Viraj | C |
+| Akash | C++ |
+| Viraj | C++ |
++---------+---------+
+4 rows in set (0.00 sec)

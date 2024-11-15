@@ -1,0 +1,181 @@
+Name: Abraham Khatti
+Class: SE-IT
+Assignment: 10
+Write and execute suitable database triggers .Consider row level and
+statement level triggers
+
+mysql> create database trigg;
+Query OK, 1 row affected (0.05 sec)
+
+mysql> use trigg;
+Database changed
+mysql> create table orders (order_id int primary key, order_date date, total_amount decimal(10,2));
+Query OK, 0 rows affected (0.34 sec)
+
+mysql> create table order_details(order_detail_id int primary key, order_id int, product_name varchar(100), price decimal(10,2), foreign key(order_id) references orders (order_id));
+Query OK, 0 rows affected (0.30 sec)
+
+mysql> show tables;
++-----------------+
+| Tables_in_trigg |
++-----------------+
+| order_details   |
+| orders          |
++-----------------+
+2 rows in set (0.06 sec)
+
+mysql> desc order_details;
++-----------------+---------------+------+-----+---------+-------+
+| Field           | Type          | Null | Key | Default | Extra |
++-----------------+---------------+------+-----+---------+-------+
+| order_detail_id | int(11)       | NO   | PRI | NULL    |       |
+| order_id        | int(11)       | YES  | MUL | NULL    |       |
+| product_name    | varchar(100)  | YES  |     | NULL    |       |
+| price           | decimal(10,2) | YES  |     | NULL    |       |
++-----------------+---------------+------+-----+---------+-------+
+4 rows in set (0.02 sec)
+
+mysql> desc orders;
++--------------+---------------+------+-----+---------+-------+
+| Field        | Type          | Null | Key | Default | Extra |
++--------------+---------------+------+-----+---------+-------+
+| order_id     | int(11)       | NO   | PRI | NULL    |       |
+| order_date   | date          | YES  |     | NULL    |       |
+| total_amount | decimal(10,2) | YES  |     | NULL    |       |
++--------------+---------------+------+-----+---------+-------+
+3 rows in set (0.00 sec)
+
+mysql> insert into orders values(1,'2020-11-09', 1000);
+Query OK, 1 row affected (0.04 sec)
+
+mysql> DESC ORDERS;
++--------------+---------------+------+-----+---------+-------+
+| Field        | Type          | Null | Key | Default | Extra |
++--------------+---------------+------+-----+---------+-------+
+| order_id     | int(11)       | NO   | PRI | NULL    |       |
+| order_date   | date          | YES  |     | NULL    |       |
+| total_amount | decimal(10,2) | YES  |     | NULL    |       |
++--------------+---------------+------+-----+---------+-------+
+3 rows in set (0.00 sec)
+
+mysql> DELIMITER //
+mysql> CREATE TRIGGER update_total_amount
+    -> AFTER INSERT ON order_details
+    -> FOR EACH ROW
+    -> BEGIN
+    -> DECLARE total DECIMAL(10, 2);
+    -> SELECT SUM(price) INTO total
+    -> FROM order_details
+    -> WHERE order_id = NEW.order_id;
+    -> UPDATE orders
+    -> SET total_amount = total
+    -> WHERE order_id = NEW.order_id;
+    -> END //
+Query OK, 0 rows affected (0.07 sec)
+
+mysql> DELIMITER ;
+mysql> SELECT * FROM ORDERS;
++----------+------------+--------------+
+| order_id | order_date | total_amount |
++----------+------------+--------------+
+|        1 | 2020-11-09 |      1000.00 |
++----------+------------+--------------+
+1 row in set (0.00 sec)
+
+mysql> SELECT * FROM ORDER_DETAILS;
+Empty set (0.02 sec)
+
+mysql> insert into order_details values (101, 1, 'FILES', '100');
+Query OK, 1 row affected (0.07 sec)
+
+mysql> insert into orders values (2,'2020-09-10', 300);
+Query OK, 1 row affected (0.04 sec)
+
+mysql> insert into order_details values (102, 2, 'FILES', '200');
+Query OK, 1 row affected (0.08 sec)
+
+mysql> select * from oder_details;
+ERROR 1146 (42S02): Table 'trigg.oder_details' doesn't exist
+mysql> select * from order_details;
++-----------------+----------+--------------+--------+
+| order_detail_id | order_id | product_name | price  |
++-----------------+----------+--------------+--------+
+|             101 |        1 | FILES        | 100.00 |
+|             102 |        2 | FILES        | 200.00 |
++-----------------+----------+--------------+--------+
+2 rows in set (0.00 sec)
+
+mysql> insert into order_details values (103, 2, 'FILES', '200');
+Query OK, 1 row affected (0.03 sec)
+
+mysql> select * from order_details;
++-----------------+----------+--------------+--------+
+| order_detail_id | order_id | product_name | price  |
++-----------------+----------+--------------+--------+
+|             101 |        1 | FILES        | 100.00 |
+|             102 |        2 | FILES        | 200.00 |
+|             103 |        2 | FILES        | 200.00 |
++-----------------+----------+--------------+--------+
+3 rows in set (0.00 sec)
+
+mysql> select * from orders;
++----------+------------+--------------+
+| order_id | order_date | total_amount |
++----------+------------+--------------+
+|        1 | 2020-11-09 |       100.00 |
+|        2 | 2020-09-10 |       400.00 |
++----------+------------+--------------+
+2 rows in set (0.00 sec)
+
+mysql> insert into order_details values (104, 2, 'FILES', '300');
+Query OK, 1 row affected (0.09 sec)
+
+mysql> select * from orders;
++----------+------------+--------------+
+| order_id | order_date | total_amount |
++----------+------------+--------------+
+|        1 | 2020-11-09 |       100.00 |
+|        2 | 2020-09-10 |       700.00 |
++----------+------------+--------------+
+2 rows in set (0.00 sec)
+
+
+mysql> use trigg;
+Database changed
+mysql> show tables;
++-----------------+
+| Tables_in_trigg |
++-----------------+
+| audit_log       |
+| employees       |
+| order_details   |
+| orders          |
++-----------------+
+4 rows in set (0.00 sec)
+
+mysql> delimiter //
+mysql> create trigger employees_audit_update_trigger after update on employees for each row begin insert into audit_log (action_type, table_name, record_id) values ('update', 'employees', new.employee_id);
+    -> end//
+Query OK, 0 rows affected (0.05 sec)
+
+mysql> delimiter ;
+mysql> update employees set employee_id=102 where employee_id=101;
+Query OK, 1 row affected (0.08 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select * from employees;
++-------------+---------------+------------+----------+
+| employee_id | employee_name | department | salary   |
++-------------+---------------+------------+----------+
+|         102 | Prakash       | IT         | 10000.00 |
++-------------+---------------+------------+----------+
+1 row in set (0.00 sec)
+
+mysql> select * from audit_log;
++--------+-------------+------------+-----------+---------------------+
+| log_id | action_type | table_name | record_id | change_time         |
++--------+-------------+------------+-----------+---------------------+
+|      1 | insert      | employees  |       101 | 2024-04-12 14:20:38 |
+|      2 | update      | employees  |       102 | 2024-04-12 14:37:24 |
++--------+-------------+------------+-----------+---------------------+
+2 rows in set (0.00 sec)
